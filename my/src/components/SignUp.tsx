@@ -1,47 +1,64 @@
-"use client"
+"use client";
 import * as React from "react";
-import {useForm} from "react-hook-form"
-import {Container,Typography,Grid,Box, Paper,Link,Checkbox,FormControlLabel,TextField, CssBaseline, Button} from "@mui/material";
+import { useForm } from "react-hook-form";
+import {
+  Container,
+  Typography,
+  Grid,
+  Box,
+  Paper,
+  Link,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  CssBaseline,
+  Button,
+  RadioGroup,
+  FormLabel,
+  FormControl,
+  Radio
+} from "@mui/material";
+
+type FormValues = {
+  name: string;
+  email: string;
+  password: string;
+};
+interface SignUpProps {
+    setIsLogin: (value: boolean) => void; // Define the prop
+  }
 
 
-type FormValues={
-    name:string
-    email: string
-    password:string
-}
-const SignUpSide: React.FC = () => {
- 
- const form= useForm<FormValues>({
-    defaultValues:{
-        name:'',
-        email:'',
-        password:''
+  const SignUp: React.FC<SignUpProps> = ({ setIsLogin }) => {
+    const [value, setValue] = React.useState('user');
 
-    }
- })
-const  {register,handleSubmit}=form
+  const form = useForm<FormValues>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+  const { register, handleSubmit, formState } = form;
+  const { errors } = formState;
 
-
-//     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
-//     const data = new FormData(event.currentTarget);
-//     console.log({
-//       email: data.get("email"),
-//       password: data.get("password"),
-//     });
-//   };
-const onSubmit=(data:FormValues)=>{
-    console.log('data register', data)
-}
+  const onSubmit = (data: FormValues) => {
+    console.log("data register", data);
+    setIsLogin(true);
+  };
 
 
+  
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value);
+  };
   return (
-    <Container component="section" maxWidth="lg">
-      <Box sx={{ marginTop: 8 }}>
+    <Container component="section" className="pt-8" maxWidth="lg">
+     
         <Grid container>
           <CssBaseline />
-          {/* <Grid
+          <Grid
             item
             xs={false}
             sm={4}
@@ -56,7 +73,7 @@ const onSubmit=(data:FormValues)=>{
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-          /> */}
+          />
           <Grid
             item
             xs={12}
@@ -79,43 +96,58 @@ const onSubmit=(data:FormValues)=>{
                 Sign Up
               </Typography>
               <form
-                // component="form"
-                noValidate
+                // noValidate
                 onSubmit={handleSubmit(onSubmit)}
-                // sx={{ mt: 1 }}
-               
               >
+                  <FormControl className="w-full">
+               <FormLabel id="demo-controlled-radio-buttons-group">Chose you role</FormLabel>
+      <RadioGroup
+        aria-labelledby="demo-controlled-radio-buttons-group"
+        name="controlled-radio-buttons-group"
+        value={value}
+        className="flex w-full justify-between items-center"
+        onChange={handleChange}
+      >
+        <FormControlLabel value="user" control={<Radio />} label="Commentator" />
+        <FormControlLabel value="admin" control={<Radio />} label="Author" />
+      </RadioGroup>
+      </FormControl>
                 <TextField
                   margin="normal"
-                 
                   fullWidth
-                //   name="name"
+                  //   name="name"
                   label="Name"
                   type="text"
                   id="name"
-                  {...register("name", {required:"Name is required"})}
-                   autoComplete="name"
-                   autoFocus
+                  {...register("name", { required: "Name is required" })}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                  autoComplete="name"
+                  autoFocus
                 />
                 <TextField
                   margin="normal"
-             
                   fullWidth
                   id="email"
                   label="Email Address"
-                //   name="email"
-                  {...register("email", {required:"Email is required"})}
+                  //   name="email"
+                  {...register("email", { required: "Email is required" })}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
                   autoComplete="email"
                   autoFocus
                 />
                 <TextField
                   margin="normal"
-                
                   fullWidth
-                //   name="password"
+                  //   name="password"
                   label="Password"
                   type="password"
-                  {...register("password", {required:"Password is required"})}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
                   id="password"
                   autoComplete="current-password"
                 />
@@ -147,9 +179,9 @@ const onSubmit=(data:FormValues)=>{
             </Box>
           </Grid>
         </Grid>
-      </Box>
+   
     </Container>
   );
 };
 
-export default SignUpSide;
+export default SignUp;

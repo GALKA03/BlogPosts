@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { DarkTheme, LightTheme } from './theme/theme';
 import { ThemeProvider, CssBaseline } from '@mui/material'
 import Header from "@/components/Header/Header"
+ import SignUpPage from './auth/signup/page';
+// import SignUp from '@/components/SignUp';
 
 
 
@@ -19,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const [isDark, setIsDark] = useState(false);
-  
+  const [isLogin, setIsLogin]= useState(false)
   const switchTheme: any = () => {
     setIsDark(!isDark);
   }
@@ -29,8 +31,14 @@ export default function RootLayout({
     <ThemeProvider theme={isDark ? DarkTheme : LightTheme}>
       <CssBaseline/>
       <body>
-      <Header switchTheme={switchTheme} isDark={isDark} />
-      {children}
+      {isLogin ? (
+            <>
+              <Header switchTheme={switchTheme} isDark={isDark} />
+              {children}
+            </>
+          ) : (
+            <SignUpPage setIsLogin={setIsLogin} />
+          )}
       </body>
     </ThemeProvider>
     </html>

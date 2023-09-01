@@ -1,16 +1,36 @@
-"use client"
+"use client";
 import * as React from "react";
+import { useForm } from "react-hook-form";
+import {
+  Container,
+  Typography,
+  Grid,
+  Box,
+  Paper,
+  Link,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  CssBaseline,
+  Button,
+} from "@mui/material";
 
-import {Container,Typography,Grid,Box, Paper,Link,Checkbox,FormControlLabel,TextField, CssBaseline, Button} from "@mui/material";
-
+type FormValues = {
+  name: string;
+  email: string;
+  password: string;
+};
 const SignInSide: React.FC = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const form = useForm<FormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+  const { register, handleSubmit, formState } = form;
+  const { errors } = formState;
+  const onSubmit = (data: FormValues) => {
+    console.log("data register", data);
   };
 
   return (
@@ -55,11 +75,9 @@ const SignInSide: React.FC = () => {
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
-              <Box
-                component="form"
-                noValidate
-                onSubmit={handleSubmit}
-                sx={{ mt: 1 }}
+              <form
+                // noValidate
+                onSubmit={handleSubmit(onSubmit)}
               >
                 <TextField
                   margin="normal"
@@ -67,7 +85,9 @@ const SignInSide: React.FC = () => {
                   fullWidth
                   id="email"
                   label="Email Address"
-                  name="email"
+                  {...register("email", { required: "Email is required" })}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
                   autoComplete="email"
                   autoFocus
                 />
@@ -75,10 +95,14 @@ const SignInSide: React.FC = () => {
                   margin="normal"
                   required
                   fullWidth
-                  name="password"
                   label="Password"
                   type="password"
                   id="password"
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
                   autoComplete="current-password"
                 />
                 <FormControlLabel
@@ -105,7 +129,7 @@ const SignInSide: React.FC = () => {
                     </Link>
                   </Grid>
                 </Grid>
-              </Box>
+              </form>
             </Box>
           </Grid>
         </Grid>

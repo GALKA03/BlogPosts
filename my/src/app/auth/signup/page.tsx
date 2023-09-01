@@ -1,8 +1,14 @@
-import SignUp from "@/components/SignUp"
+import SignUp from "@/components/SignUp";
+import { ReactElement } from "react";
 
-const SignUpPage=()=>{
-return(
- <SignUp/> 
-)
+interface SignUpPageProps {
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export default SignUpPage
+
+const SignUpPage: React.FC<SignUpPageProps> = ({ setIsLogin }): ReactElement => {
+  return (
+    <SignUp  setIsLogin={setIsLogin} />
+  );
+}
+
+export default SignUpPage;

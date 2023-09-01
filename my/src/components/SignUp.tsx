@@ -99,19 +99,25 @@ interface SignUpProps {
                 // noValidate
                 onSubmit={handleSubmit(onSubmit)}
               >
-                  <FormControl className="w-full">
-               <FormLabel id="demo-controlled-radio-buttons-group">Chose you role</FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-controlled-radio-buttons-group"
-        name="controlled-radio-buttons-group"
-        value={value}
-        className="flex w-full justify-between items-center"
-        onChange={handleChange}
-      >
-        <FormControlLabel value="user" control={<Radio />} label="Commentator" />
-        <FormControlLabel value="admin" control={<Radio />} label="Author" />
-      </RadioGroup>
-      </FormControl>
+                <FormControl>
+  <FormLabel id="demo-controlled-radio-buttons-group">Choose your role</FormLabel>
+  <Grid container alignItems="center">
+    <Grid item>
+      <FormControlLabel value="user" control={<Radio sx={{
+    '&.Mui-checked': {
+      visibility: 'visible',
+    },
+  }} />} label="Commentator" />
+    </Grid>
+    <Grid item>
+      <FormControlLabel value="admin" control={<Radio sx={{
+    '&.Mui-checked': {
+      visibility: 'visible',
+    },
+  }} />} label="Author" />
+    </Grid>
+  </Grid>
+</FormControl>
                 <TextField
                   margin="normal"
                   fullWidth
